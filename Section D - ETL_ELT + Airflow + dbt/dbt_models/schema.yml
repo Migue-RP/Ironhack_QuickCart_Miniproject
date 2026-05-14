@@ -1,0 +1,59 @@
+version: 2
+
+models:
+
+  - name: stg_customers
+    description: "Cleaned customer staging table"
+
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+      - name: email
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned orders staging table"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+      - name: total_usd
+        description: total revenue after discount is applied
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "Cleaned products staging table"
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_order_items
+    description: "Cleaned order_items staging table"
+    columns:
+      - name: order_id
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+
+      - name: product_id
+        tests:
+          - relationships:
+              to: ref('stg_products')
+              field: product_id

@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: quickcart_raw
+    database: quickcart
+    schema: raw
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+    loaded_at_field: ingestion_timestamp
+    tables:
+      - name: orders
+      - name: order_items
+      - name: products
+      - name: customers
